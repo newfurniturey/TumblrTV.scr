@@ -15,10 +15,10 @@ using System.Windows.Shapes;
 
 namespace TumblrTV.scr {
 	/// <summary>
-	/// Interaction logic for MainWindow.xaml
+	/// Interaction logic for Screensaver.xaml
 	/// </summary>
-	public partial class MainWindow : Window {
-		public MainWindow() {
+	public partial class Screensaver : Window {
+		public Screensaver() {
 			InitializeComponent();
 		}
 	}

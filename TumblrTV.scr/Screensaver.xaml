@@ -1,0 +1,10 @@
+﻿<Window x:Class="TumblrTV.scr.Screensaver"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		Title="TumblrTV"
+		WindowStyle="None" ResizeMode="NoResize" WindowState="Maximized"
+		Height="350" Width="525">
+    <Grid>
+        
+    </Grid>
+</Window>
