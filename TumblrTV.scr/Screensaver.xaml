@@ -9,7 +9,8 @@
 		MouseDown="Window_MouseDown"
 		MouseMove="Window_MouseMove"
 >
-    <Grid>
-        
-    </Grid>
+    <Grid x:Name="MainGrid">
+		<Label Content="Hi mom =]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Foreground="Red"/>
+
+	</Grid>
 </Window>

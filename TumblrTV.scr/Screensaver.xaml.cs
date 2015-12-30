@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -13,7 +14,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Point = System.Windows.Point;
 
 namespace TumblrTV.scr {
 	/// <summary>
@@ -43,6 +44,23 @@ namespace TumblrTV.scr {
 		}
 
 		public Screensaver(IntPtr handle) : this() {
+			Rectangle lpRect = new Rectangle();
+			GetClientRect(handle, out lpRect);
+
+			HwndSourceParameters sourceParams = new HwndSourceParameters("sourceParams");
+
+			sourceParams.PositionX = 0;
+			sourceParams.PositionY = 0;
+			sourceParams.Height = lpRect.Bottom - lpRect.Top;
+			sourceParams.Width = lpRect.Right - lpRect.Left;
+			sourceParams.ParentWindow = handle;
+			sourceParams.WindowStyle = (int)(0x10000000 | 0x40000000 | 0x02000000);
+
+			HwndSource winWPFContent = new HwndSource(sourceParams);
+			winWPFContent.Disposed += (o, args) => this.Close();
+			winWPFContent.RootVisual = this.MainGrid;
+
+			/*
 			IntPtr thisHandle = (new WindowInteropHelper(this)).Handle;
 			SetParent(thisHandle, handle);
 
@@ -57,6 +75,7 @@ namespace TumblrTV.scr {
 			this.Top = 0;
 			this.Width = parentRect.Width;
 			this.Height = parentRect.Height;
+			*/
 
 			// Set the preview flag
 			this.isPreview = true;

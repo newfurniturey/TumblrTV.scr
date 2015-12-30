@@ -4,9 +4,12 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Interop;
+using System.Windows.Media;
 using Application = System.Windows.Application;
 
 namespace TumblrTV.scr {
@@ -51,7 +54,7 @@ namespace TumblrTV.scr {
 					return null;
 				}
 
-				return DisplayPreviewScreen(long.Parse(secondArg));
+				return DisplayPreviewScreen(Int32.Parse(secondArg));
 			}
 
 			DisplayError("invalid parameters");
@@ -70,8 +73,8 @@ namespace TumblrTV.scr {
 			return null;
 		}
 
-		private Window DisplayPreviewScreen(long winHandle) {
-			IntPtr handle = new IntPtr(winHandle);
+		private Window DisplayPreviewScreen(Int32 winHandle) {
+			new Screensaver(new IntPtr(winHandle));
 			return null;
 		}
 
