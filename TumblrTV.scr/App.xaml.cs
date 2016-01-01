@@ -30,7 +30,7 @@ namespace TumblrTV.scr {
 			string secondArg = null;
 
 			// get our second arg, if any
-			if (firstArg.Length > 2) {
+			if ((firstArg != null) && (firstArg.Length > 2)) {
 				secondArg = firstArg.Substring(3).Trim();
 				firstArg = firstArg.Substring(0, 2);
 			} else if (args.Length > 1) {
