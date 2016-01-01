@@ -16,5 +16,11 @@
 			HorizontalAlignment="Left" VerticalAlignment="Top"
 			Stretch="UniformToFill"
 		/>
+		<Image x:Name="logo"
+			Source="Resources/logo.png"
+			HorizontalAlignment="Left" VerticalAlignment="Top"
+			Width="29" Height="39"
+			Margin="20,10,0,0" 
+		/>
 	</Grid>
 </Window>

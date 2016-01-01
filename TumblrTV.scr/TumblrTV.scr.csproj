@@ -109,6 +109,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\logo.png" />
     <Content Include="Resources\static.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
