@@ -16,11 +16,18 @@
 			HorizontalAlignment="Left" VerticalAlignment="Top"
 			Stretch="UniformToFill"
 		/>
-		<Image x:Name="logo"
+		<Image x:Name="logo_small"
 			Source="Resources/logo.png"
 			HorizontalAlignment="Left" VerticalAlignment="Top"
 			Width="29" Height="39"
 			Margin="20,10,0,0" 
+		/>
+
+		<Image x:Name="logo_loading"
+			gif:ImageBehavior.AnimatedSource="Resources/loading.gif"
+			HorizontalAlignment="Left" VerticalAlignment="Top"
+			Width="242" Height="326"
+			Margin="155,84,0,-60" 
 		/>
 	</Grid>
 </Window>
