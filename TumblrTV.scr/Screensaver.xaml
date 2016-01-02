@@ -1,4 +1,5 @@
 ﻿<Window x:Class="TumblrTV.scr.Screensaver"
+		x:Name="MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:gif="http://wpfanimatedgif.codeplex.com"
@@ -6,12 +7,11 @@
 		Height="350" Width="525"
 		WindowStyle="None" ResizeMode="NoResize" WindowState="Maximized"
 		ShowInTaskbar="False"
-		KeyDown="Window_KeyDown"
-		MouseDown="Window_MouseDown"
-		MouseMove="Window_MouseMove"
+		KeyDown="Window_KeyDown" MouseDown="Window_MouseDown" MouseMove="Window_MouseMove"
+		SizeChanged="MainWindow_SizeChanged"
 >
-	<Grid x:Name="MainGrid">
-		<Image x:Name="static"
+	<Canvas x:Name="MainCanvas">
+		<Image x:Name="img_static"
 			gif:ImageBehavior.AnimatedSource="Resources/static.gif"
 			HorizontalAlignment="Left" VerticalAlignment="Top"
 			Stretch="UniformToFill"
@@ -22,12 +22,10 @@
 			Width="29" Height="39"
 			Margin="20,10,0,0" 
 		/>
-
 		<Image x:Name="logo_loading"
 			gif:ImageBehavior.AnimatedSource="Resources/loading.gif"
 			HorizontalAlignment="Left" VerticalAlignment="Top"
 			Width="242" Height="326"
-			Margin="155,84,0,-60" 
 		/>
-	</Grid>
+	</Canvas>
 </Window>

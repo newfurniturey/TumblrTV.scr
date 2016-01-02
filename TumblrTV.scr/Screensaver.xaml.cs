@@ -41,41 +41,22 @@ namespace TumblrTV.scr {
 
 		public Screensaver() {
 			InitializeComponent();
+			sizeImages();
+		}
+
+		public void sizeImages() {
+			img_static.Width = MainWindow.ActualWidth;
+			img_static.Height = MainWindow.ActualHeight;
+			
+			double left = (MainCanvas.ActualWidth - logo_loading.Width) / 2;
+			Canvas.SetLeft(logo_loading, left);
+
+			double top  = (MainCanvas.ActualHeight - logo_loading.Height) / 2;
+			Canvas.SetTop(logo_loading, top);
 		}
 
 		public Screensaver(IntPtr handle) : this() {
-			Rectangle lpRect = new Rectangle();
-			GetClientRect(handle, out lpRect);
-
-			HwndSourceParameters sourceParams = new HwndSourceParameters("sourceParams");
-
-			sourceParams.PositionX = 0;
-			sourceParams.PositionY = 0;
-			sourceParams.Height = lpRect.Bottom - lpRect.Top;
-			sourceParams.Width = lpRect.Right - lpRect.Left;
-			sourceParams.ParentWindow = handle;
-			sourceParams.WindowStyle = (int)(0x10000000 | 0x40000000 | 0x02000000);
-
-			HwndSource winWPFContent = new HwndSource(sourceParams);
-			winWPFContent.Disposed += (o, args) => this.Close();
-			winWPFContent.RootVisual = this.MainGrid;
-
-			/*
-			IntPtr thisHandle = (new WindowInteropHelper(this)).Handle;
-			SetParent(thisHandle, handle);
-
-			// Make this a child window so it'll auto-close when the parent closes
-			// GWL_STYLE = -16, WS_CHILD = 0x40000000
-			SetWindowLong(thisHandle, -16, new IntPtr(GetWindowLong(thisHandle, -16) | 0x40000000));
-
-			// Position the window inside the preview rect
-			Rectangle parentRect;
-			GetClientRect(handle, out parentRect);
-			this.Left = 0;
-			this.Top = 0;
-			this.Width = parentRect.Width;
-			this.Height = parentRect.Height;
-			*/
+			setParentWindow(handle);
 
 			// Set the preview flag
 			this.isPreview = true;
@@ -114,6 +95,28 @@ namespace TumblrTV.scr {
 			}
 
 			this.mouseLocation = pos;
+		}
+
+		private void setParentWindow(IntPtr handle) {
+			Rectangle lpRect = new Rectangle();
+			GetClientRect(handle, out lpRect);
+
+			HwndSourceParameters sourceParams = new HwndSourceParameters("sourceParams");
+
+			sourceParams.PositionX = 0;
+			sourceParams.PositionY = 0;
+			sourceParams.Height = lpRect.Bottom - lpRect.Top;
+			sourceParams.Width = lpRect.Right - lpRect.Left;
+			sourceParams.ParentWindow = handle;
+			sourceParams.WindowStyle = (int)(0x10000000 | 0x40000000 | 0x02000000);
+
+			HwndSource winWPFContent = new HwndSource(sourceParams);
+			winWPFContent.Disposed += (o, args) => this.Close();
+			winWPFContent.RootVisual = this.MainCanvas;
+		}
+
+		private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e) {
+			sizeImages();
 		}
 	}
 }
