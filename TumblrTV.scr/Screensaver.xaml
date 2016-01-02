@@ -20,7 +20,8 @@
 			Source="Resources/logo.png"
 			HorizontalAlignment="Left" VerticalAlignment="Top"
 			Width="29" Height="39"
-			Margin="20,10,0,0" 
+			Margin="20,10,0,0"
+			Visibility="Hidden"
 		/>
 		<Image x:Name="logo_loading"
 			gif:ImageBehavior.AnimatedSource="Resources/loading.gif"
