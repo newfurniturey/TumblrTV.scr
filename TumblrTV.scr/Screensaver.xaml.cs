@@ -45,20 +45,19 @@ namespace TumblrTV.scr {
 		}
 
 		public void sizeImages() {
+			// stretch the static to full-screen
 			img_static.Width = MainWindow.ActualWidth;
 			img_static.Height = MainWindow.ActualHeight;
 			
-			double left = (MainCanvas.ActualWidth - logo_loading.Width) / 2;
-			Canvas.SetLeft(logo_loading, left);
-
-			double top  = (MainCanvas.ActualHeight - logo_loading.Height) / 2;
-			Canvas.SetTop(logo_loading, top);
+			// absolute-center for the loading logo
+			Canvas.SetLeft(logo_loading, (MainCanvas.ActualWidth - logo_loading.Width) / 2);
+			Canvas.SetTop(logo_loading, (MainCanvas.ActualHeight - logo_loading.Height) / 2);
 		}
 
 		public Screensaver(IntPtr handle) : this() {
 			setParentWindow(handle);
 
-			// Set the preview flag
+			// set the preview flag
 			this.isPreview = true;
 		}
 
@@ -85,9 +84,10 @@ namespace TumblrTV.scr {
 
 			Point pos = e.GetPosition(null);
 			if (this.mouseLocation != null) {
-				double moveX = Math.Abs(((Point)this.mouseLocation).X - pos.X),
-					moveY = Math.Abs(((Point)this.mouseLocation).Y - pos.Y);
+				double moveX = Math.Abs(((Point)this.mouseLocation).X - pos.X);
+				double moveY = Math.Abs(((Point)this.mouseLocation).Y - pos.Y);
 
+				// if the cursor has moved more than X pixels, kill the app
 				if ((moveX >= this.mouseMoveThreshold) || (moveY >= this.mouseMoveThreshold)) {
 					Application.Current.Shutdown();
 				}
