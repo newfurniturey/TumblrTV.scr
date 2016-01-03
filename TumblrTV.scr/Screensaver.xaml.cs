@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +17,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Point = System.Windows.Point;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using WpfAnimatedGif;
 
 namespace TumblrTV.scr {
 	/// <summary>
@@ -38,10 +43,60 @@ namespace TumblrTV.scr {
 		private bool isPreview = false;
 		private Point? mouseLocation = null;
 		private int mouseMoveThreshold = 10;
+		string[] urls = null;
 
 		public Screensaver() {
 			InitializeComponent();
 			sizeImages();
+
+			BackgroundWorker worker = new BackgroundWorker();
+			worker.DoWork += loadTv;
+			worker.WorkerReportsProgress = true;
+			worker.ProgressChanged += loadTvProgress;
+			worker.RunWorkerAsync();
+		}
+
+		private void loadTvProgress(object sender, ProgressChangedEventArgs e) {
+			/*
+			foreach (string url in urls) {
+				Console.WriteLine("url: " + url);
+			}
+			*/
+			
+			var image = new System.Windows.Controls.Image();
+			var bitmap = new BitmapImage();
+			bitmap.BeginInit();
+			bitmap.UriSource = new Uri(urls[0], UriKind.Absolute);
+			bitmap.EndInit();
+			ImageBehavior.SetAnimatedSource(image, bitmap);
+
+			/*
+			BitmapImage bitmap = new BitmapImage();
+			bitmap.BeginInit();
+			bitmap.UriSource = new Uri(urls[0], UriKind.Absolute);
+			bitmap.EndInit();
+
+			image.Source = bitmap;*/
+			MainCanvas.Children.Add(image);
+		}
+
+		private void loadTv(object sender, System.ComponentModel.DoWorkEventArgs e) {
+			using (WebClient wc = new WebClient()) {
+				wc.Headers.Add("X-Requested-With", "XMLHttpRequest");
+				var jsonResponse = wc.DownloadString("https://www.tumblr.com/svc/tv/search/pancakes?size=1280&limit=40");
+				//Console.WriteLine(jsonResponse);
+
+				//dynamic json = JObject.Parse(jsonResponse);
+				dynamic json = JsonConvert.DeserializeObject(jsonResponse);
+				urls = new string[((Newtonsoft.Json.Linq.JArray)json.response.images).Count];
+				int i = 0;
+				foreach (var image in json.response.images) {
+					urls[i++] = image.media[0].url;
+				}
+			}
+			
+			((BackgroundWorker)sender).ReportProgress(1);
+			Console.WriteLine("done!");
 		}
 
 		public void sizeImages() {
