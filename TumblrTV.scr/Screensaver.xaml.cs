@@ -20,12 +20,13 @@ using Point = System.Windows.Point;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using WpfAnimatedGif;
+using System.Runtime.CompilerServices;
 
 namespace TumblrTV.scr {
 	/// <summary>
 	/// Interaction logic for Screensaver.xaml
 	/// </summary>
-	public partial class Screensaver : Window {
+	public partial class Screensaver : Window, INotifyPropertyChanged {
 		#region Win32_API_functions
 		[DllImport("user32.dll")]
 		static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
@@ -39,13 +40,28 @@ namespace TumblrTV.scr {
 		[DllImport("user32.dll")]
 		static extern bool GetClientRect(IntPtr hWnd, out Rectangle lpRect);
 		#endregion
-
+		
 		private bool isPreview = false;
 		private Point? mouseLocation = null;
 		private int mouseMoveThreshold = 10;
 		string[] urls = null;
+		List<Post> posts = new List<Post>();
+
+		private string post_blog_name;
+		public string BlogName {
+			get {
+				return post_blog_name;
+			}
+			set {
+				if (post_blog_name != value) {
+					post_blog_name = value;
+					NotifyPropertyChanged();
+				}
+			}
+		}
 
 		public Screensaver() {
+			DataContext = this;
 			InitializeComponent();
 			sizeImages();
 
@@ -64,9 +80,10 @@ namespace TumblrTV.scr {
 		}
 
 		private void loadTvProgress(object sender, ProgressChangedEventArgs e) {
+			Post post = posts[0];
+
 			var bitmap = new BitmapImage();
 			bitmap.DownloadCompleted += bitmap_DownloadCompleted;
-			Console.WriteLine(urls[0]);
 			bitmap.BeginInit();
 			bitmap.UriSource = new Uri(urls[0], UriKind.Absolute);
 			bitmap.EndInit();
@@ -82,6 +99,14 @@ namespace TumblrTV.scr {
 			displayMainImage(source);
 
 			toggleLoadingDisplay();
+
+			BlogName = posts[0].Name;
+			BitmapImage bitmap = new BitmapImage();
+			bitmap.BeginInit();
+			bitmap.UriSource = new Uri(posts[0].Avatar, UriKind.Absolute);
+			bitmap.EndInit();
+			blog_avatar.Source = bitmap;
+
 		}
 
 		private void displayBgImage(BitmapImage source) {
@@ -125,6 +150,12 @@ namespace TumblrTV.scr {
 				int i = 0;
 				foreach (var image in json.response.images) {
 					urls[i++] = image.media[0].url;
+
+					posts.Add(new Post() {
+						Url = image.media[0].url,
+						Avatar = image.avatar,
+						Name = image.tumblelog
+					});
 				}
 			}
 
@@ -146,10 +177,12 @@ namespace TumblrTV.scr {
 				logo_loading.Visibility = Visibility.Hidden;
 				img_static.Visibility = Visibility.Hidden;
 				logo_small.Visibility = Visibility.Visible;
+				blog_info.Visibility = Visibility.Visible;
 			} else {
 				logo_loading.Visibility = Visibility.Visible;
 				img_static.Visibility = Visibility.Visible;
 				logo_small.Visibility = Visibility.Hidden;
+				blog_info.Visibility = Visibility.Hidden;
 			}
 		}
 
@@ -210,5 +243,21 @@ namespace TumblrTV.scr {
 		private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e) {
 			sizeImages();
 		}
+
+		#region INotifyPropertyChanged Handler(s)
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected virtual void NotifyPropertyChanged([CallerMemberName] String propertyName = "") {
+			if (PropertyChanged != null) {
+				var handler = PropertyChanged;
+				handler(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		#endregion
+	}
+
+	class Post {
+		public string Url { get; set; }
+		public string Avatar { get; set; }
+		public string Name { get; set; }
 	}
 }

@@ -43,10 +43,10 @@
 					VerticalAlignment="Center"
 				/>
 
-				<Label
+				<Label x:Name="blog_name"
 					FontSize="20" FontWeight="Bold" Foreground="White"
-					Content="Sample Blog Name"
 					VerticalAlignment="Center"
+					Content="{Binding Path=BlogName, UpdateSourceTrigger=PropertyChanged}"
 				/>
 			</StackPanel>
 		</ItemsControl>
