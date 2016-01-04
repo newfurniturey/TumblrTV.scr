@@ -72,6 +72,16 @@ namespace TumblrTV.scr {
 			worker.RunWorkerAsync();
 		}
 
+		public Screensaver(Rectangle bounds) : this() {
+			this.Left = bounds.Left;
+			this.Top = bounds.Top;
+			this.Width = bounds.Width;
+			this.Height = bounds.Height;
+			if (this.IsLoaded) {
+				this.WindowState = System.Windows.WindowState.Maximized;
+			}
+		}
+
 		public Screensaver(IntPtr handle) : this() {
 			setParentWindow(handle);
 

@@ -67,7 +67,7 @@ namespace TumblrTV.scr {
 
 		private Window DisplayScreensaver() {
 			foreach (Screen screen in Screen.AllScreens) {
-				(new Screensaver()).Show();
+				(new Screensaver(screen.Bounds)).Show();
 			}
 
 			return null;
