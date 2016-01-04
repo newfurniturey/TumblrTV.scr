@@ -73,36 +73,44 @@ namespace TumblrTV.scr {
 		}
 
 		void bitmap_DownloadCompleted(object sender, EventArgs e) {
-			BitmapImage bmp = (BitmapImage)sender;
+			BitmapImage source = (BitmapImage)sender;
 
+			if (((double)source.Width / (double)source.Height) < 1.0) {
+				displayBgImage(source);
+			}
+
+			displayMainImage(source);
+
+			toggleLoadingDisplay();
+		}
+
+		private void displayBgImage(BitmapImage source) {
+			var bg_image = new System.Windows.Controls.Image();
+			ImageBehavior.SetAnimatedSource(bg_image, source);
+
+			double target_width = ((double)MainCanvas.ActualWidth * 1.15);
+			double n_percent = (target_width / (double)source.Width);
+			bg_image.Width = target_width;
+			bg_image.Height = (int)(source.Height * n_percent);
+			bg_image.Stretch = Stretch.Fill;
+			bg_image.Opacity = 0.5;
+
+			Canvas.SetTop(bg_image, (MainCanvas.ActualHeight - bg_image.Height) / 2);
+			Canvas.SetLeft(bg_image, (MainCanvas.ActualWidth - bg_image.Width) / 2);
+			MainCanvas.Children.Add(bg_image);
+		}
+
+		private void displayMainImage(BitmapImage source) {
 			var image = new System.Windows.Controls.Image();
-			ImageBehavior.SetAnimatedSource(image, bmp);
+			ImageBehavior.SetAnimatedSource(image, source);
 
-			double asp_ratio = ((double)bmp.Width / (double)bmp.Height);
+			double asp_ratio = ((double)source.Width / (double)source.Height);
 			image.Height = MainCanvas.ActualHeight;
 			image.Width = (int)(MainCanvas.ActualWidth * asp_ratio);
-
-			if (image.Width < MainCanvas.ActualWidth) {
-				var bg_image = new System.Windows.Controls.Image();
-				ImageBehavior.SetAnimatedSource(bg_image, bmp);
-
-				double target_width = ((double)MainCanvas.ActualWidth * 1.15);
-				double n_percent = (target_width / (double)bmp.Width);
-				bg_image.Width = target_width;
-				bg_image.Height = (int)(bmp.Height * n_percent);
-				bg_image.Stretch = Stretch.Fill;
-				bg_image.Opacity = 0.5;
-
-				Canvas.SetTop(bg_image, (MainCanvas.ActualHeight - bg_image.Height) / 2);
-				Canvas.SetLeft(bg_image, (MainCanvas.ActualWidth - bg_image.Width) / 2);
-				MainCanvas.Children.Add(bg_image);
-			}
 
 			Canvas.SetTop(image, 0);
 			Canvas.SetLeft(image, (MainCanvas.ActualWidth - image.Width) / 2);
 			MainCanvas.Children.Add(image);
-
-			toggleLoadingDisplay();
 		}
 
 		private void loadTv(object sender, System.ComponentModel.DoWorkEventArgs e) {
