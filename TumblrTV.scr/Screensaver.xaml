@@ -22,6 +22,7 @@
 			Width="29" Height="39"
 			Margin="20,10,0,0"
 			Visibility="Hidden"
+			Panel.ZIndex="2"
 		/>
 		<Image x:Name="logo_loading"
 			gif:ImageBehavior.AnimatedSource="Resources/loading.gif"
@@ -30,7 +31,9 @@
 		/>
 
 		<ItemsControl x:Name="blog_info"
-			Canvas.Bottom="20" Canvas.Left="20">
+			Canvas.Bottom="20" Canvas.Left="20"
+			Panel.ZIndex="2"
+			Visibility="Collapsed">
 			<StackPanel
 				Orientation="Horizontal"
 				VerticalAlignment="Center"

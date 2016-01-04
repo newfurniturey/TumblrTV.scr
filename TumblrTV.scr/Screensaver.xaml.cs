@@ -97,6 +97,7 @@ namespace TumblrTV.scr {
 
 			Canvas.SetTop(bg_image, (MainCanvas.ActualHeight - bg_image.Height) / 2);
 			Canvas.SetLeft(bg_image, (MainCanvas.ActualWidth - bg_image.Width) / 2);
+			Canvas.SetZIndex(bg_image, 0);
 			MainCanvas.Children.Add(bg_image);
 		}
 
@@ -110,6 +111,7 @@ namespace TumblrTV.scr {
 
 			Canvas.SetTop(image, 0);
 			Canvas.SetLeft(image, (MainCanvas.ActualWidth - image.Width) / 2);
+			Canvas.SetZIndex(image, 1);
 			MainCanvas.Children.Add(image);
 		}
 
