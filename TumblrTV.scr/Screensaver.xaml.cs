@@ -176,8 +176,10 @@ namespace TumblrTV.scr {
 			if (logo_loading.Visibility == Visibility.Visible) {
 				logo_loading.Visibility = Visibility.Hidden;
 				img_static.Visibility = Visibility.Hidden;
-				logo_small.Visibility = Visibility.Visible;
-				blog_info.Visibility = Visibility.Visible;
+				if (!this.isPreview) {
+					logo_small.Visibility = Visibility.Visible;
+					blog_info.Visibility = Visibility.Visible;
+				}
 			} else {
 				logo_loading.Visibility = Visibility.Visible;
 				img_static.Visibility = Visibility.Visible;
