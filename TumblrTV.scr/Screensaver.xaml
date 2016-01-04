@@ -28,5 +28,24 @@
 			HorizontalAlignment="Left" VerticalAlignment="Top"
 			Width="242" Height="326"
 		/>
+
+		<ItemsControl x:Name="blog_info"
+			Canvas.Bottom="20" Canvas.Left="20">
+			<StackPanel
+				Orientation="Horizontal"
+				VerticalAlignment="Center"
+				>
+				<Image x:Name="blog_avatar"
+					Width="20" Height="20" Stretch="Fill"
+					VerticalAlignment="Center"
+				/>
+
+				<Label
+					FontSize="20" FontWeight="Bold" Foreground="White"
+					Content="Sample Blog Name"
+					VerticalAlignment="Center"
+				/>
+			</StackPanel>
+		</ItemsControl>
 	</Canvas>
 </Window>
