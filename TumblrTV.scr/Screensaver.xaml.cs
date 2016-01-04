@@ -56,37 +56,60 @@ namespace TumblrTV.scr {
 			worker.RunWorkerAsync();
 		}
 
+		public Screensaver(IntPtr handle) : this() {
+			setParentWindow(handle);
+
+			// set the preview flag
+			this.isPreview = true;
+		}
+
 		private void loadTvProgress(object sender, ProgressChangedEventArgs e) {
-			/*
-			foreach (string url in urls) {
-				Console.WriteLine("url: " + url);
-			}
-			*/
-			
-			var image = new System.Windows.Controls.Image();
 			var bitmap = new BitmapImage();
+			bitmap.DownloadCompleted += bitmap_DownloadCompleted;
+			Console.WriteLine(urls[0]);
 			bitmap.BeginInit();
 			bitmap.UriSource = new Uri(urls[0], UriKind.Absolute);
 			bitmap.EndInit();
-			ImageBehavior.SetAnimatedSource(image, bitmap);
+		}
 
-			/*
-			BitmapImage bitmap = new BitmapImage();
-			bitmap.BeginInit();
-			bitmap.UriSource = new Uri(urls[0], UriKind.Absolute);
-			bitmap.EndInit();
+		void bitmap_DownloadCompleted(object sender, EventArgs e) {
+			BitmapImage bmp = (BitmapImage)sender;
 
-			image.Source = bitmap;*/
+			var image = new System.Windows.Controls.Image();
+			ImageBehavior.SetAnimatedSource(image, bmp);
+
+			double asp_ratio = ((double)bmp.Width / (double)bmp.Height);
+			image.Height = MainCanvas.ActualHeight;
+			image.Width = (int)(MainCanvas.ActualWidth * asp_ratio);
+
+			if (image.Width < MainCanvas.ActualWidth) {
+				var bg_image = new System.Windows.Controls.Image();
+				ImageBehavior.SetAnimatedSource(bg_image, bmp);
+
+				double target_width = ((double)MainCanvas.ActualWidth * 1.15);
+				double n_percent = (target_width / (double)bmp.Width);
+				bg_image.Width = target_width;
+				bg_image.Height = (int)(bmp.Height * n_percent);
+				bg_image.Stretch = Stretch.Fill;
+				bg_image.Opacity = 0.5;
+
+				Canvas.SetTop(bg_image, (MainCanvas.ActualHeight - bg_image.Height) / 2);
+				Canvas.SetLeft(bg_image, (MainCanvas.ActualWidth - bg_image.Width) / 2);
+				MainCanvas.Children.Add(bg_image);
+			}
+
+			Canvas.SetTop(image, 0);
+			Canvas.SetLeft(image, (MainCanvas.ActualWidth - image.Width) / 2);
 			MainCanvas.Children.Add(image);
+
+			toggleLoadingDisplay();
 		}
 
 		private void loadTv(object sender, System.ComponentModel.DoWorkEventArgs e) {
 			using (WebClient wc = new WebClient()) {
 				wc.Headers.Add("X-Requested-With", "XMLHttpRequest");
 				var jsonResponse = wc.DownloadString("https://www.tumblr.com/svc/tv/search/pancakes?size=1280&limit=40");
-				//Console.WriteLine(jsonResponse);
 
-				//dynamic json = JObject.Parse(jsonResponse);
 				dynamic json = JsonConvert.DeserializeObject(jsonResponse);
 				urls = new string[((Newtonsoft.Json.Linq.JArray)json.response.images).Count];
 				int i = 0;
@@ -94,26 +117,30 @@ namespace TumblrTV.scr {
 					urls[i++] = image.media[0].url;
 				}
 			}
-			
+
 			((BackgroundWorker)sender).ReportProgress(1);
-			Console.WriteLine("done!");
 		}
 
-		public void sizeImages() {
+		private void sizeImages() {
 			// stretch the static to full-screen
 			img_static.Width = MainWindow.ActualWidth;
 			img_static.Height = MainWindow.ActualHeight;
-			
+
 			// absolute-center for the loading logo
 			Canvas.SetLeft(logo_loading, (MainCanvas.ActualWidth - logo_loading.Width) / 2);
 			Canvas.SetTop(logo_loading, (MainCanvas.ActualHeight - logo_loading.Height) / 2);
 		}
 
-		public Screensaver(IntPtr handle) : this() {
-			setParentWindow(handle);
-
-			// set the preview flag
-			this.isPreview = true;
+		private void toggleLoadingDisplay() {
+			if (logo_loading.Visibility == Visibility.Visible) {
+				logo_loading.Visibility = Visibility.Hidden;
+				img_static.Visibility = Visibility.Hidden;
+				logo_small.Visibility = Visibility.Visible;
+			} else {
+				logo_loading.Visibility = Visibility.Visible;
+				img_static.Visibility = Visibility.Visible;
+				logo_small.Visibility = Visibility.Hidden;
+			}
 		}
 
 		private void Window_KeyDown(object sender, KeyEventArgs e) {

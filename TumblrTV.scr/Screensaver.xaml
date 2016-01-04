@@ -10,7 +10,7 @@
 		KeyDown="Window_KeyDown" MouseDown="Window_MouseDown" MouseMove="Window_MouseMove"
 		SizeChanged="MainWindow_SizeChanged"
 >
-	<Canvas x:Name="MainCanvas">
+	<Canvas x:Name="MainCanvas" Background="Black">
 		<Image x:Name="img_static"
 			gif:ImageBehavior.AnimatedSource="Resources/static.gif"
 			HorizontalAlignment="Left" VerticalAlignment="Top"
