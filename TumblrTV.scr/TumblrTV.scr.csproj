@@ -64,6 +64,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BooleanConverter.cs" />
+    <Compile Include="BooleanToVisibilityConverter.cs" />
+    <Compile Include="ScreensaverViewModel.cs" />
     <Page Include="ConfigScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
