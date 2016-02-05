@@ -72,8 +72,9 @@ namespace TumblrTV.scr {
 
 		private void loadTv(object sender, System.ComponentModel.DoWorkEventArgs e) {
 			using (WebClient wc = new WebClient()) {
+				string type = ((new Random()).Next(0, 2) == 1) ? "pancakes" : "beach";
 				wc.Headers.Add("X-Requested-With", "XMLHttpRequest");
-				var jsonResponse = wc.DownloadString("https://www.tumblr.com/svc/tv/search/pancakes?size=1280&limit=40");
+				var jsonResponse = wc.DownloadString("https://www.tumblr.com/svc/tv/search/" + type + "?size=1280&limit=40");
 
 				dynamic json = JsonConvert.DeserializeObject(jsonResponse);
 				urls = new string[((Newtonsoft.Json.Linq.JArray)json.response.images).Count];

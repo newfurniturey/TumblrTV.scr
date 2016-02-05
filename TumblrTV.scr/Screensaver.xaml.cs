@@ -155,9 +155,8 @@ namespace TumblrTV.scr {
 		private void post_image_bg_AnimationLoaded(object sender, RoutedEventArgs e) {
 			ImageSource source = WpfAnimatedGif.ImageBehavior.GetAnimatedSource((System.Windows.Controls.Image)sender);
 
-			if (((double)source.Width / (double)source.Height) < 1.0) {
+			if ((((double)source.Width / (double)source.Height) < 1.0) || ((double)source.Width < (double)MainCanvas.ActualWidth)) {
 				sizeBgImage(source);
-				
 			}
 			sizeMainImage(source);
 		}
