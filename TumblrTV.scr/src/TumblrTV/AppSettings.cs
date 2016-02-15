@@ -9,17 +9,7 @@ using System.Threading.Tasks;
 namespace com.newfurniturey.TumblrTV {
 	public class AppSettings {
 
-		private static AppSettings instance = null;
-
-		private AppSettings() {
-		}
-
-		public static AppSettings GetInstance() {
-			if (AppSettings.instance == null) {
-				AppSettings.instance = new AppSettings();
-			}
-
-			return AppSettings.instance;
+		public AppSettings() {
 		}
 
 		public void Save() {
