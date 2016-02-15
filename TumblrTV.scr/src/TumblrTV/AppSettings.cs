@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 namespace com.newfurniturey.TumblrTV {
 	public class AppSettings {
 
-		public AppSettings() {
+		public AppSettings(bool autoLoad = true) {
+			if (autoLoad) {
+				Load();
+			}
 		}
 
 		public void Save() {

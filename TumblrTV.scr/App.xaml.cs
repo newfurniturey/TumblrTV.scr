@@ -30,8 +30,7 @@ namespace com.newfurniturey.TumblrTV {
 		}
 
 		private void LoadSettings() {
-			this.settings = new AppSettings();
-			this.settings.Load();
+			this.settings = new AppSettings(true);
 		}
 
 		private Window ProcessArgs(string[] args) {
