@@ -19,11 +19,19 @@ namespace com.newfurniturey.TumblrTV {
 	/// </summary>
 	public partial class App : Application {
 
+		private AppSettings settings = null;
+
 		private void ApplicationStartup(object sender, StartupEventArgs e) {
+			LoadSettings();
 			Window win = ProcessArgs(e.Args);
 			if (win != null) {
 				win.Show();
 			}
+		}
+
+		private void LoadSettings() {
+			this.settings = new AppSettings();
+			this.settings.Load();
 		}
 
 		private Window ProcessArgs(string[] args) {
@@ -63,19 +71,19 @@ namespace com.newfurniturey.TumblrTV {
 		}
 
 		private Window DisplayConfigScreen() {
-			return new ConfigScreen();
+			return new ConfigScreen(this.settings);
 		}
 
 		private Window DisplayScreensaver() {
 			foreach (Screen screen in Screen.AllScreens) {
-				(new Screensaver(screen.Bounds)).Show();
+				(new Screensaver(this.settings, screen.Bounds)).Show();
 			}
 
 			return null;
 		}
 
 		private Window DisplayPreviewScreen(Int32 winHandle) {
-			new Screensaver(new IntPtr(winHandle));
+			new Screensaver(this.settings, new IntPtr(winHandle));
 			return null;
 		}
 

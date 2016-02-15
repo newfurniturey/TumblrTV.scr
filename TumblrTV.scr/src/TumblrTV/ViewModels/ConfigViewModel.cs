@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 namespace com.newfurniturey.TumblrTV.ViewModels {
 	class ConfigViewModel : INotifyPropertyChanged {
 
+		private AppSettings settings = null;
 		private List<string> tags = new List<string>();
 		public string Tags {
 			get {
@@ -25,7 +26,8 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 			}
 		}
 
-		public ConfigViewModel() {
+		public ConfigViewModel(AppSettings settings) {
+			this.settings = settings;
 		}
 
 		#region INotifyPropertyChanged Handler(s)

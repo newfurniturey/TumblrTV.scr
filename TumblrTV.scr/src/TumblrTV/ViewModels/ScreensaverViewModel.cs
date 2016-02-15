@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 namespace com.newfurniturey.TumblrTV.ViewModels {
 	class ScreensaverViewModel : INotifyPropertyChanged {
 
-		string[] urls = null;
-		List<Post> posts = new List<Post>();
+		private AppSettings settings = null;
+		private string[] urls = null;
+		private List<Post> posts = new List<Post>();
 
 		private string post_blog_name;
 		public string BlogName {
@@ -62,7 +63,9 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 			}
 		}
 
-		public ScreensaverViewModel() {
+		public ScreensaverViewModel(AppSettings settings) {
+			this.settings = settings;
+
 			BackgroundWorker worker = new BackgroundWorker();
 			worker.DoWork += loadTv;
 			worker.WorkerReportsProgress = true;

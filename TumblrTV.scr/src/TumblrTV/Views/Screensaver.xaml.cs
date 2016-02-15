@@ -46,13 +46,13 @@ namespace com.newfurniturey.TumblrTV.Views {
 		private Point? mouseLocation = null;
 		private int mouseMoveThreshold = 10;
 
-		public Screensaver() {
-			DataContext = new ScreensaverViewModel();
+		public Screensaver(AppSettings settings) {
+			DataContext = new ScreensaverViewModel(settings);
 			InitializeComponent();
 			sizeImages();
 		}
 
-		public Screensaver(Rectangle bounds) : this() {
+		public Screensaver(AppSettings settings, Rectangle bounds) : this(settings) {
 			this.Left = bounds.Left;
 			this.Top = bounds.Top;
 			this.Width = bounds.Width;
@@ -62,7 +62,7 @@ namespace com.newfurniturey.TumblrTV.Views {
 			}
 		}
 
-		public Screensaver(IntPtr handle) : this() {
+		public Screensaver(AppSettings settings, IntPtr handle) : this(settings) {
 			setParentWindow(handle);
 
 			// set the preview flag

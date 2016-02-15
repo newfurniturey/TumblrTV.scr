@@ -18,8 +18,8 @@ namespace com.newfurniturey.TumblrTV.Views {
 	/// Interaction logic for ConfigScreen.xaml
 	/// </summary>
 	public partial class ConfigScreen : Window {
-		public ConfigScreen() {
-			DataContext = new ConfigViewModel();
+		public ConfigScreen(AppSettings settings) {
+			DataContext = new ConfigViewModel(settings);
 			InitializeComponent();
 		}
 	}
