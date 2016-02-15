@@ -11,6 +11,7 @@
 		<GroupBox Header="Tags" HorizontalAlignment="Left" Height="118" Margin="20,10,0,0" VerticalAlignment="Top" Width="320">
 			<ItemsControl Margin="0,0,0,0">
 				<TextBox x:Name="tags"
+					Text="{Binding Path=Tags, UpdateSourceTrigger=PropertyChanged}"
 					HorizontalAlignment="Left" VerticalAlignment="Top"
 					Height="25" Width="287"
 					Margin="10,10,0,0"

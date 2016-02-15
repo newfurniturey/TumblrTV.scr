@@ -18,6 +18,7 @@ namespace TumblrTV.scr {
 	/// </summary>
 	public partial class ConfigScreen : Window {
 		public ConfigScreen() {
+			DataContext = new ConfigViewModel();
 			InitializeComponent();
 		}
 	}
