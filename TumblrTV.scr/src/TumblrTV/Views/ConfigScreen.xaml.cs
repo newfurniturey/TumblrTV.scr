@@ -11,8 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using com.newfurniturey.TumblrTV.ViewModels;
 
-namespace TumblrTV.scr {
+namespace com.newfurniturey.TumblrTV.Views {
 	/// <summary>
 	/// Interaction logic for ConfigScreen.xaml
 	/// </summary>

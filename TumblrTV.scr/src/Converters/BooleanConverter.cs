@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace TumblrTV.scr {
+namespace com.newfurniturey.Converters {
 	public class BooleanConverter<T> : IValueConverter {
 		public T True {
 			get;

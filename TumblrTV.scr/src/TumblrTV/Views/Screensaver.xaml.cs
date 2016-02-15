@@ -21,8 +21,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using WpfAnimatedGif;
 using System.Runtime.CompilerServices;
+using com.newfurniturey.TumblrTV.ViewModels;
 
-namespace TumblrTV.scr {
+namespace com.newfurniturey.TumblrTV.Views {
 	/// <summary>
 	/// Interaction logic for Screensaver.xaml
 	/// </summary>

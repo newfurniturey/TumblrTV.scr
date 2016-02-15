@@ -7,7 +7,7 @@
     <ProjectGuid>{C56911A9-AA24-4CBC-B4E8-8B1AC5FD11BB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TumblrTV.scr</RootNamespace>
+    <RootNamespace>com.newfurniturey.TumblrTV</RootNamespace>
     <AssemblyName>TumblrTV.scr</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -64,15 +64,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BooleanConverter.cs" />
-    <Compile Include="BooleanToVisibilityConverter.cs" />
-    <Compile Include="ConfigViewModel.cs" />
-    <Compile Include="ScreensaverViewModel.cs" />
-    <Page Include="ConfigScreen.xaml">
+    <Compile Include="src\Converters\BooleanConverter.cs" />
+    <Compile Include="src\Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="src\TumblrTV\ViewModels\ConfigViewModel.cs" />
+    <Compile Include="src\TumblrTV\ViewModels\ScreensaverViewModel.cs" />
+    <Page Include="src\TumblrTV\Views\ConfigScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Screensaver.xaml">
+    <Page Include="src\TumblrTV\Views\Screensaver.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -80,10 +80,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfigScreen.xaml.cs">
+    <Compile Include="src\TumblrTV\Views\ConfigScreen.xaml.cs">
       <DependentUpon>ConfigScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Screensaver.xaml.cs">
+    <Compile Include="src\TumblrTV\Views\Screensaver.xaml.cs">
       <DependentUpon>Screensaver.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -126,6 +126,9 @@
     <Content Include="Resources\static.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\TumblrTV\Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

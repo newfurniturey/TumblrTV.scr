@@ -11,8 +11,9 @@ using System.Windows.Forms;
 using System.Windows.Interop;
 using System.Windows.Media;
 using Application = System.Windows.Application;
+using com.newfurniturey.TumblrTV.Views;
 
-namespace TumblrTV.scr {
+namespace com.newfurniturey.TumblrTV {
 	/// <summary>
 	/// Interaction logic for App.xaml
 	/// </summary>

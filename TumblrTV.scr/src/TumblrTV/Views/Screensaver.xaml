@@ -1,9 +1,9 @@
-﻿<Window x:Class="TumblrTV.scr.Screensaver"
+﻿<Window x:Class="com.newfurniturey.TumblrTV.Views.Screensaver"
 		x:Name="MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:gif="http://wpfanimatedgif.codeplex.com"
-		xmlns:app="clr-namespace:TumblrTV.scr"
+		xmlns:converters="clr-namespace:com.newfurniturey.Converters"
 		Title="TumblrTV"
 		Height="350" Width="525" WindowStartupLocation="Manual"
 		WindowStyle="None" ResizeMode="NoResize"
@@ -12,12 +12,12 @@
 		SizeChanged="MainWindow_SizeChanged"
 >
 	<Window.Resources>
-		<app:BooleanToVisibilityConverter 
+		<converters:BooleanToVisibilityConverter 
 			x:Key="BooleanToVisibilityConverter" 
 			True="Visible" 
 			False="Collapsed"
 		/>
-		<app:BooleanToVisibilityConverter 
+		<converters:BooleanToVisibilityConverter 
 			x:Key="NegativeBooleanToVisibilityConverter" 
 			True="Collapsed" 
 			False="Visible"

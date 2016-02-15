@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace TumblrTV.scr {
+namespace com.newfurniturey.Converters {
 	public sealed class BooleanToVisibilityConverter : BooleanConverter<Visibility> {
 		public BooleanToVisibilityConverter() : base(Visibility.Visible, Visibility.Collapsed) {
 		}

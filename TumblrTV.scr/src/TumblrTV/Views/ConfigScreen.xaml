@@ -1,4 +1,4 @@
-﻿<Window x:Class="TumblrTV.scr.ConfigScreen"
+﻿<Window x:Class="com.newfurniturey.TumblrTV.Views.ConfigScreen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="TumblrTV Settings"
