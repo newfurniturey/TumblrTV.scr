@@ -42,13 +42,13 @@
 				/>
 			</ItemsControl>
 		</GroupBox>
-		
-		<GroupBox Header="Caching" HorizontalAlignment="Left" Height="86" Margin="20,226,0,0" VerticalAlignment="Top" Width="320">
-			<ItemsControl Margin="0,0,0,0">
+
+		<GroupBox Header="Caching" HorizontalAlignment="Left" Height="86" Margin="20,226,0,0" VerticalAlignment="Top" Width="320" ToolTip="Coming Soon">
+			<ItemsControl Margin="0,0,0,0" ToolTip="Coming Soon">
 				<CheckBox x:Name="cache_store_local"
 					Content="Cache images locally"
 					Margin="10,10,0,0"
-					IsChecked="True"
+					IsChecked="False" IsEnabled="False"
 				/>
 				
 				<CheckBox x:Name="cache_use_local"
