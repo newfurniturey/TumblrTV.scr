@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
@@ -25,15 +26,19 @@ namespace com.newfurniturey.TumblrTV {
 		}
 
 		public void Load() {
-			string data;
+			dynamic data;
 			string filePath = GetPath();
-			using (var fstream = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.Read)) {
-				using (var reader = new StreamReader(fstream)) {
-					data = reader.ReadToEnd();
+			try {
+				using (var fstream = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.Read)) {
+					using (var reader = new StreamReader(fstream)) {
+						data = JsonConvert.DeserializeObject(reader.ReadToEnd());
+					}
 				}
+			} catch (Newtonsoft.Json.JsonReaderException e) {
+				// eek
 			}
 
-			Console.WriteLine("Settings: " + data);
+			//Console.WriteLine("Settings: " + data);
 		}
 
 		private String GetPath() {
