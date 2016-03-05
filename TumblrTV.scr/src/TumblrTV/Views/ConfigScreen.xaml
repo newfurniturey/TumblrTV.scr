@@ -5,8 +5,21 @@
 		Height="363" Width="489"
 		ResizeMode="NoResize" ShowInTaskbar="False">
 	<Grid Margin="0,0,0,0">
-		<Button Content="OK" HorizontalAlignment="Left" Margin="354,20,0,0" VerticalAlignment="Top" Width="110" Height="25"/>
-		<Button Content="Cancel" HorizontalAlignment="Left" Margin="354,55,0,0" VerticalAlignment="Top" Width="110" Height="25"/>
+		<Button
+			Content="OK"
+			HorizontalAlignment="Left" VerticalAlignment="Top"
+			Margin="354,20,0,0"
+			Width="110" Height="25"
+			Click="SaveButton_Click"
+		/>
+		
+		<Button
+			Content="Cancel"
+			HorizontalAlignment="Left" VerticalAlignment="Top"
+			Margin="354,55,0,0"
+			Width="110" Height="25"
+			Click="CancelButton_Click"
+		/>
 		
 		<GroupBox Header="Tags" HorizontalAlignment="Left" Height="118" Margin="20,10,0,0" VerticalAlignment="Top" Width="320">
 			<ItemsControl Margin="0,0,0,0">
@@ -22,7 +35,7 @@
 				<CheckBox x:Name="tags_shuffle"
 					Content="Shuffle images from each tag."
 					Margin="10,0,0,0"
-					IsChecked="True"
+					IsChecked="{Binding Path=TagsShuffle, UpdateSourceTrigger=PropertyChanged}"
 				/>
 			</ItemsControl>
 		</GroupBox>
@@ -32,13 +45,13 @@
 				<CheckBox x:Name="monitors_unique_tags"
 					Content="Unique tag(s) per monitor"
 					Margin="10,10,0,0"
-					IsChecked="False"
+					IsChecked="{Binding Path=MonitorsUnique, UpdateSourceTrigger=PropertyChanged}"
 				/>
 				
 				<CheckBox x:Name="monitors_reduce_dup"
 					Content="Reduce duplicates per monitor"
 					Margin="10,10,0,0"
-					IsChecked="True"
+					IsChecked="{Binding Path=MonitorsDupes, UpdateSourceTrigger=PropertyChanged}"
 				/>
 			</ItemsControl>
 		</GroupBox>
@@ -48,13 +61,14 @@
 				<CheckBox x:Name="cache_store_local"
 					Content="Cache images locally"
 					Margin="10,10,0,0"
-					IsChecked="False" IsEnabled="False"
+					IsEnabled="False"
+					IsChecked="{Binding Path=CachingLocal, UpdateSourceTrigger=PropertyChanged}"
 				/>
 				
 				<CheckBox x:Name="cache_use_local"
 					Content="Use cached images when no internet is available"
 					Margin="10,10,0,0"
-					IsChecked="True"
+					IsChecked="{Binding Path=CachingNoNetwork, UpdateSourceTrigger=PropertyChanged}"
 					IsEnabled="{Binding ElementName=cache_store_local, Path=IsChecked}"
 				/>
 			</ItemsControl>

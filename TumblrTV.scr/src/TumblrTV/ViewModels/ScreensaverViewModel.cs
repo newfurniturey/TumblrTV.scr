@@ -15,6 +15,7 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 		private string[] urls = null;
 		private List<Post> posts = new List<Post>();
 
+		#region Properties
 		private string post_blog_name;
 		public string BlogName {
 			get {
@@ -62,6 +63,7 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 				return PostImageUrl != null;
 			}
 		}
+		#endregion
 
 		public ScreensaverViewModel(AppSettings settings) {
 			this.settings = settings;

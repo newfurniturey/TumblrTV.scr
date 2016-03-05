@@ -11,9 +11,73 @@ namespace com.newfurniturey.TumblrTV {
 	public class AppSettings {
 		Settings settings = null;
 
+		#region LocalSettings
+		public List<string> Tags {
+			get {
+				return this.settings.Tags;
+			}
+
+			set {
+				this.settings.Tags = value;
+			}
+		}
+
+		public bool TagsShuffle {
+			get {
+				return this.settings.TagsShuffle;
+			}
+
+			set {
+				this.settings.TagsShuffle = value;
+			}
+		}
+
+		public bool MonitorsUnique {
+			get {
+				return this.settings.MonitorsUnique;
+			}
+
+			set {
+				this.settings.MonitorsUnique = value;
+			}
+		}
+
+		public bool MonitorsDupes {
+			get {
+				return this.settings.MonitorsDupes;
+			}
+
+			set {
+				this.settings.MonitorsDupes = value;
+			}
+		}
+
+		public bool CachingLocal {
+			get {
+				return this.settings.CachingLocal;
+			}
+
+			set {
+				this.settings.CachingLocal = value;
+			}
+		}
+
+		public bool CachingNoNetwork {
+			get {
+				return this.settings.CachingNoNetwork;
+			}
+
+			set {
+				this.settings.CachingNoNetwork = value;
+			}
+		}
+		#endregion
+
 		public AppSettings(bool autoLoad = true) {
 			if (autoLoad) {
 				Load();
+			} else {
+				this.settings = new Settings();
 			}
 		}
 
@@ -22,10 +86,13 @@ namespace com.newfurniturey.TumblrTV {
 				throw new Exception("settings haven't been set yet...");
 			}
 
+			string data = JsonConvert.SerializeObject(this.settings, Formatting.Indented);
+			Console.WriteLine("Saving Settings: " + data);
+
 			string filePath = GetPath();
 			using (var fstream = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
 				using (var writer = new StreamWriter(fstream)) {
-					writer.Write(JsonConvert.SerializeObject(this.settings, Formatting.Indented));
+					writer.Write(data);
 				}
 			}
 		}

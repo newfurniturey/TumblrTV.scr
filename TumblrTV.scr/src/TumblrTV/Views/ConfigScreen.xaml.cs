@@ -18,9 +18,20 @@ namespace com.newfurniturey.TumblrTV.Views {
 	/// Interaction logic for ConfigScreen.xaml
 	/// </summary>
 	public partial class ConfigScreen : Window {
+		private AppSettings settings = null;
 		public ConfigScreen(AppSettings settings) {
+			this.settings = settings;
 			DataContext = new ConfigViewModel(settings);
 			InitializeComponent();
+		}
+
+		private void SaveButton_Click(object sender, RoutedEventArgs e) {
+			this.settings.Save();
+			this.Close();
+		}
+
+		private void CancelButton_Click(object sender, RoutedEventArgs e) {
+			this.Close();
 		}
 	}
 }
