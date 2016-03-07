@@ -76,8 +76,10 @@ namespace com.newfurniturey.TumblrTV {
 		public AppSettings(bool autoLoad = true) {
 			if (autoLoad) {
 				Load();
-			} else {
-				this.settings = new Settings();
+			}
+
+			if (this.settings == null) {
+				DefaultSettings();
 			}
 		}
 
@@ -89,11 +91,10 @@ namespace com.newfurniturey.TumblrTV {
 			string data = JsonConvert.SerializeObject(this.settings, Formatting.Indented);
 			Console.WriteLine("Saving Settings: " + data);
 
+			
 			string filePath = GetPath();
-			using (var fstream = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
-				using (var writer = new StreamWriter(fstream)) {
-					writer.Write(data);
-				}
+			using (var writer = new StreamWriter(filePath, false)) {
+				writer.Write(data);
 			}
 		}
 
@@ -123,6 +124,21 @@ namespace com.newfurniturey.TumblrTV {
 			return String.Format(@"{0}\settings.json",
 				path
 			);
+		}
+
+		private void DefaultSettings() {
+			this.settings = new Settings() {
+				Tags = new List<string>() {
+					"pancakes",
+					"anime",
+					"beach"
+				},
+				TagsShuffle = true,
+				MonitorsUnique = true,
+				MonitorsDupes = true,
+				CachingLocal = false,
+				CachingNoNetwork = false
+			};
 		}
 	}
 
