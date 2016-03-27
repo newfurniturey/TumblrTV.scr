@@ -89,9 +89,6 @@ namespace com.newfurniturey.TumblrTV {
 			}
 
 			string data = JsonConvert.SerializeObject(this.settings, Formatting.Indented);
-			Console.WriteLine("Saving Settings: " + data);
-
-			
 			string filePath = GetPath();
 			using (var writer = new StreamWriter(filePath, false)) {
 				writer.Write(data);
@@ -107,16 +104,15 @@ namespace com.newfurniturey.TumblrTV {
 					}
 				}
 			} catch (Newtonsoft.Json.JsonReaderException e) {
-				// eek
+				// eek; we should probably determine if the settings are corrupt or just "not set"
 			}
-
-			Console.WriteLine("Loaded Settings: " + JsonConvert.SerializeObject(this.settings, Formatting.Indented));
 		}
 
 		private String GetPath() {
 			string path = String.Format(@"{0}\TumblrTV",
 				Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
 			);
+
 			if (!Directory.Exists(path)) {
 				Directory.CreateDirectory(path);
 			}
