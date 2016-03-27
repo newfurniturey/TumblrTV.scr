@@ -71,30 +71,28 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 			this.tvId = tv.GetId();
 
 			loadTv();
+			createTimer();
 		}
 
 		private void loadTv() {
 			Post post = this.tv.NextPost(this.tvId);
 			if (post == null) {
-
-			}
-		}
-
-		private int counter = 0;
-		private void tim(object source, System.Timers.ElapsedEventArgs e) {
-			if (counter >= posts.Count) {
-				counter = 0;
+				// ??
+				return;
 			}
 
-			Post post = posts[counter++];
 			PostImageUrl = post.Url;
 			BlogName = post.Name;
 			BlogAvatarUrl = post.Avatar;
 		}
+		
+		private void timerEvent(object source, System.Timers.ElapsedEventArgs e) {
+			loadTv();
+		}
 
 		private void createTimer() {
 			System.Timers.Timer t = new System.Timers.Timer();
-			t.Elapsed += new System.Timers.ElapsedEventHandler(tim);
+			t.Elapsed += new System.Timers.ElapsedEventHandler(timerEvent);
 			t.Interval = 5000;
 			t.Enabled = true;
 		}

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -13,7 +14,8 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 		private AppSettings settings = null;
 		private static TumblrTV instance = null;
 		private string[] urls = null;
-		private List<Post> posts = new List<Post>();
+		private ConcurrentDictionary<string, List<Post>> posts = new ConcurrentDictionary<string, List<Post>>();
+		private ConcurrentDictionary<string, int> currentIndexes = new ConcurrentDictionary<string, int>();
 		private static int id = 0;
 
 		private TumblrTV(AppSettings settings) {
@@ -35,13 +37,22 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 		public int GetId() {
 			return TumblrTV.id++;
 		}
-
+		
 		public Post NextPost(int id) {
-			return null;
+			string tag = settings.Tags[id % settings.Tags.Count];
+
+			if (!posts.ContainsKey(tag) || (posts[tag].Count == 0)) {
+				return null;
+			}
+			
+			Post currentPost = posts[tag][currentIndexes[tag]];
+			currentIndexes[tag] = (++currentIndexes[tag] % posts[tag].Count);
+			return currentPost;
 		}
 
 		private void Init() {
 			BackgroundWorker worker = new BackgroundWorker();
+			worker.WorkerReportsProgress = true;
 			worker.DoWork += loadTv;
 			worker.RunWorkerAsync();
 		}
@@ -50,6 +61,9 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 			int complete = 0;
 			int total = this.settings.Tags.Count;
 			Parallel.ForEach(this.settings.Tags, (tag) => {
+				currentIndexes[tag] = 0;
+				posts[tag] = new List<Post>();
+
 				using (WebClient wc = new WebClient()) {
 					wc.Headers.Add("X-Requested-With", "XMLHttpRequest");
 					var jsonResponse = wc.DownloadString("https://www.tumblr.com/svc/tv/search/" + tag + "?size=1280&limit=40");
@@ -59,8 +73,8 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 					int i = 0;
 					foreach (var image in json.response.images) {
 						urls[i++] = image.media[0].url;
-						Console.WriteLine("loading: " + tag + " => " + image.media[0].url);
-						posts.Add(new Post() {
+
+						posts[tag].Add(new Post() {
 							Url = image.media[0].url,
 							Avatar = image.avatar,
 							Name = image.tumblelog
