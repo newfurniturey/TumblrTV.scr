@@ -36,13 +36,13 @@
 		/>
 
 		<Image x:Name="img_static"
-			gif:ImageBehavior.AnimatedSource="Resources/static.gif"
+			gif:ImageBehavior.AnimatedSource="/Resources/static.gif"
 			HorizontalAlignment="Left" VerticalAlignment="Top"
 			Stretch="UniformToFill"
 			Visibility="{Binding Path=PostVisible, Converter={StaticResource NegativeBooleanToVisibilityConverter}}"
 		/>
 		<Image x:Name="logo_small"
-			Source="Resources/logo.png"
+			Source="/Resources/logo.png"
 			HorizontalAlignment="Left" VerticalAlignment="Top"
 			Width="29" Height="39"
 			Margin="20,10,0,0"
@@ -50,7 +50,7 @@
 			Panel.ZIndex="2"
 		/>
 		<Image x:Name="logo_loading"
-			gif:ImageBehavior.AnimatedSource="Resources/loading.gif"
+			gif:ImageBehavior.AnimatedSource="/Resources/loading.gif"
 			HorizontalAlignment="Left" VerticalAlignment="Top"
 			Width="242" Height="326"
 			Visibility="{Binding Path=PostVisible, Converter={StaticResource NegativeBooleanToVisibilityConverter}}"
