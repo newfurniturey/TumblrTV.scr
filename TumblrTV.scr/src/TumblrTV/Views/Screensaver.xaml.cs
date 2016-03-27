@@ -22,6 +22,7 @@ using Newtonsoft.Json.Linq;
 using WpfAnimatedGif;
 using System.Runtime.CompilerServices;
 using com.newfurniturey.TumblrTV.ViewModels;
+using TV = com.newfurniturey.TumblrTV.src.TumblrTV.TumblrTV;
 
 namespace com.newfurniturey.TumblrTV.Views {
 	/// <summary>
@@ -46,13 +47,13 @@ namespace com.newfurniturey.TumblrTV.Views {
 		private Point? mouseLocation = null;
 		private int mouseMoveThreshold = 10;
 
-		public Screensaver(AppSettings settings) {
-			DataContext = new ScreensaverViewModel(settings);
+		public Screensaver(TV tv) {
+			DataContext = new ScreensaverViewModel(tv);
 			InitializeComponent();
 			sizeImages();
 		}
 
-		public Screensaver(AppSettings settings, Rectangle bounds) : this(settings) {
+		public Screensaver(TV tv, Rectangle bounds) : this(tv) {
 			this.Left = bounds.Left;
 			this.Top = bounds.Top;
 			this.Width = bounds.Width;
@@ -62,7 +63,7 @@ namespace com.newfurniturey.TumblrTV.Views {
 			}
 		}
 
-		public Screensaver(AppSettings settings, IntPtr handle) : this(settings) {
+		public Screensaver(TV tv, IntPtr handle) : this(tv) {
 			setParentWindow(handle);
 
 			// set the preview flag

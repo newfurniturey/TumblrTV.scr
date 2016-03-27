@@ -12,6 +12,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using Application = System.Windows.Application;
 using com.newfurniturey.TumblrTV.Views;
+using TV = com.newfurniturey.TumblrTV.src.TumblrTV.TumblrTV;
 
 namespace com.newfurniturey.TumblrTV {
 	/// <summary>
@@ -74,15 +75,17 @@ namespace com.newfurniturey.TumblrTV {
 		}
 
 		private Window DisplayScreensaver() {
+			TV tv = TV.GetInstance(this.settings);
 			foreach (Screen screen in Screen.AllScreens) {
-				(new Screensaver(this.settings, screen.Bounds)).Show();
+				(new Screensaver(tv, screen.Bounds)).Show();
 			}
 
 			return null;
 		}
 
 		private Window DisplayPreviewScreen(Int32 winHandle) {
-			new Screensaver(this.settings, new IntPtr(winHandle));
+			TV tv = TV.GetInstance(this.settings);
+			new Screensaver(tv, new IntPtr(winHandle));
 			return null;
 		}
 

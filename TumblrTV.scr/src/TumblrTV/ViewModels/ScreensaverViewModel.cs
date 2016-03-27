@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using com.newfurniturey.TumblrTV.src.TumblrTV;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,13 +8,13 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using TV = com.newfurniturey.TumblrTV.src.TumblrTV.TumblrTV;
 
 namespace com.newfurniturey.TumblrTV.ViewModels {
 	class ScreensaverViewModel : INotifyPropertyChanged {
 
-		private AppSettings settings = null;
-		private string[] urls = null;
-		private List<Post> posts = new List<Post>();
+		private TV tv = null;
+		private int tvId = -1;
 
 		#region Properties
 		private string post_blog_name;
@@ -65,37 +66,18 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 		}
 		#endregion
 
-		public ScreensaverViewModel(AppSettings settings) {
-			this.settings = settings;
+		public ScreensaverViewModel(TV tv) {
+			this.tv = tv;
+			this.tvId = tv.GetId();
 
-			BackgroundWorker worker = new BackgroundWorker();
-			worker.DoWork += loadTv;
-			worker.WorkerReportsProgress = true;
-			worker.ProgressChanged += loadTvProgress;
-			worker.RunWorkerAsync();
+			loadTv();
 		}
 
-		private void loadTv(object sender, System.ComponentModel.DoWorkEventArgs e) {
-			using (WebClient wc = new WebClient()) {
-				string type = ((new Random()).Next(0, 2) == 1) ? "pancakes" : "beach";
-				wc.Headers.Add("X-Requested-With", "XMLHttpRequest");
-				var jsonResponse = wc.DownloadString("https://www.tumblr.com/svc/tv/search/" + type + "?size=1280&limit=40");
+		private void loadTv() {
+			Post post = this.tv.NextPost(this.tvId);
+			if (post == null) {
 
-				dynamic json = JsonConvert.DeserializeObject(jsonResponse);
-				urls = new string[((Newtonsoft.Json.Linq.JArray)json.response.images).Count];
-				int i = 0;
-				foreach (var image in json.response.images) {
-					urls[i++] = image.media[0].url;
-
-					posts.Add(new Post() {
-						Url = image.media[0].url,
-						Avatar = image.avatar,
-						Name = image.tumblelog
-					});
-				}
 			}
-
-			((BackgroundWorker)sender).ReportProgress(1);
 		}
 
 		private int counter = 0;
@@ -117,13 +99,6 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 			t.Enabled = true;
 		}
 
-		private void loadTvProgress(object sender, ProgressChangedEventArgs e) {
-			if (e.ProgressPercentage == 1) {
-				tim(null, null);
-				createTimer();
-			}
-		}
-
 		#region INotifyPropertyChanged Handler(s)
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -134,11 +109,5 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 			}
 		}
 		#endregion
-	}
-
-	class Post {
-		public string Url { get; set; }
-		public string Avatar { get; set; }
-		public string Name { get; set; }
 	}
 }

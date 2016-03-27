@@ -82,6 +82,8 @@
     <Compile Include="src\Converters\BooleanConverter.cs" />
     <Compile Include="src\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="src\TumblrTV\AppSettings.cs" />
+    <Compile Include="src\TumblrTV\Post.cs" />
+    <Compile Include="src\TumblrTV\TumblrTV.cs" />
     <Compile Include="src\TumblrTV\ViewModels\ConfigViewModel.cs" />
     <Compile Include="src\TumblrTV\ViewModels\ScreensaverViewModel.cs" />
     <Page Include="src\TumblrTV\Views\ConfigScreen.xaml">
