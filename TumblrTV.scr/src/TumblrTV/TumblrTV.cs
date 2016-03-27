@@ -47,26 +47,29 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 		}
 
 		private void loadTv(object sender, System.ComponentModel.DoWorkEventArgs e) {
-			using (WebClient wc = new WebClient()) {
-				string type = ((new Random()).Next(0, 2) == 1) ? "pancakes" : "beach";
-				wc.Headers.Add("X-Requested-With", "XMLHttpRequest");
-				var jsonResponse = wc.DownloadString("https://www.tumblr.com/svc/tv/search/" + type + "?size=1280&limit=40");
+			int complete = 0;
+			int total = this.settings.Tags.Count;
+			Parallel.ForEach(this.settings.Tags, (tag) => {
+				using (WebClient wc = new WebClient()) {
+					wc.Headers.Add("X-Requested-With", "XMLHttpRequest");
+					var jsonResponse = wc.DownloadString("https://www.tumblr.com/svc/tv/search/" + tag + "?size=1280&limit=40");
 
-				dynamic json = JsonConvert.DeserializeObject(jsonResponse);
-				urls = new string[((Newtonsoft.Json.Linq.JArray)json.response.images).Count];
-				int i = 0;
-				foreach (var image in json.response.images) {
-					urls[i++] = image.media[0].url;
-
-					posts.Add(new Post() {
-						Url = image.media[0].url,
-						Avatar = image.avatar,
-						Name = image.tumblelog
-					});
+					dynamic json = JsonConvert.DeserializeObject(jsonResponse);
+					urls = new string[((Newtonsoft.Json.Linq.JArray)json.response.images).Count];
+					int i = 0;
+					foreach (var image in json.response.images) {
+						urls[i++] = image.media[0].url;
+						Console.WriteLine("loading: " + tag + " => " + image.media[0].url);
+						posts.Add(new Post() {
+							Url = image.media[0].url,
+							Avatar = image.avatar,
+							Name = image.tumblelog
+						});
+					}
 				}
-			}
 
-			((BackgroundWorker)sender).ReportProgress(1);
+				((BackgroundWorker)sender).ReportProgress(++complete / total);
+			});
 		}
 	}
 }
