@@ -18,9 +18,9 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 		private ConcurrentDictionary<string, List<Post>> posts = new ConcurrentDictionary<string, List<Post>>();
 		private ConcurrentDictionary<string, int> currentIndexes = new ConcurrentDictionary<string, int>();
 
-		private static ConcurrentDictionary<ITvSubscriber, int> registeredTVs = new ConcurrentDictionary<ITvSubscriber, int>();
-		private static int id = 0;
-		private static bool postsLoaded = false;
+		private ConcurrentDictionary<ITvSubscriber, int> registeredTVs = new ConcurrentDictionary<ITvSubscriber, int>();
+		private int id = 0;
+		private bool postsLoaded = false;
 
 		private TumblrTV(AppSettings settings) {
 			this.settings = settings;
@@ -39,19 +39,28 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 		}
 
 		public int GetId(ITvSubscriber obj) {
-			return TumblrTV.registeredTVs.ContainsKey(obj) ? TumblrTV.registeredTVs[obj] : TumblrTV.INVALID_OBJ;
+			return this.registeredTVs.ContainsKey(obj) ? this.registeredTVs[obj] : TumblrTV.INVALID_OBJ;
 		}
 
 		public int Register(ITvSubscriber obj) {
-			if (!TumblrTV.registeredTVs.ContainsKey(obj)) {
-				TumblrTV.registeredTVs[obj] = TumblrTV.id++;
+			if (!this.registeredTVs.ContainsKey(obj)) {
+				this.registeredTVs[obj] = this.id++;
 			}
 
-			return TumblrTV.registeredTVs[obj];
+			return this.registeredTVs[obj];
+		}
+
+		public string GetCurrentTag(int id) {
+			if (!this.postsLoaded) {
+				Console.WriteLine("[TumblrTV] Posts not yet loaded.");
+				return null;
+			}
+
+			return settings.Tags[id % settings.Tags.Count];
 		}
 		
 		public Post NextPost(int id) {
-			if (!TumblrTV.postsLoaded) {
+			if (!this.postsLoaded) {
 				Console.WriteLine("[TumblrTV] Posts not yet loaded.");
 				return null;
 			}
@@ -108,7 +117,7 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 		private void tvProgressChanged(object sender, ProgressChangedEventArgs e) {
 			if (e.ProgressPercentage == 100) {
 				Console.WriteLine("[TumblrTV] Posts Loaded!");
-				TumblrTV.postsLoaded = true;
+				this.postsLoaded = true;
 			}
 		}
 	}

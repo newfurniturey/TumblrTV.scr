@@ -23,7 +23,7 @@
 			False="Visible"
 		/>
 	</Window.Resources>
-	
+
 	<Canvas x:Name="MainCanvas" Background="Black">
 		<Image x:Name="post_image_bg"
 			gif:ImageBehavior.AnimatedSource="{Binding Path=PostImageUrl, UpdateSourceTrigger=PropertyChanged}"
@@ -39,8 +39,25 @@
 			gif:ImageBehavior.AnimatedSource="/Resources/static.gif"
 			HorizontalAlignment="Left" VerticalAlignment="Top"
 			Stretch="UniformToFill"
-			Visibility="{Binding Path=PostVisible, Converter={StaticResource NegativeBooleanToVisibilityConverter}}"
+			Visibility="{Binding Path=LoadingVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
 		/>
+		
+		<Image x:Name="img_not_found"
+			Source="/Resources/colorbars.png"
+			HorizontalAlignment="Left" VerticalAlignment="Top"
+			Stretch="UniformToFill"
+			Visibility="{Binding Path=NotFound, Converter={StaticResource BooleanToVisibilityConverter}}"
+		/>
+		<TextBlock x:Name="txt_not_found"
+			FontSize="20" FontWeight="Bold" Foreground="White"
+			HorizontalAlignment="Center" VerticalAlignment="Center"
+			Visibility="{Binding Path=NotFound, Converter={StaticResource BooleanToVisibilityConverter}}"
+			>
+			<Run Text="No signal detected for " />
+			<Run Text="{Binding Path=NotFoundTag, UpdateSourceTrigger=PropertyChanged}" />
+			<Run Text="." />
+		</TextBlock>
+
 		<Image x:Name="logo_small"
 			Source="/Resources/logo.png"
 			HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -53,7 +70,7 @@
 			gif:ImageBehavior.AnimatedSource="/Resources/loading.gif"
 			HorizontalAlignment="Left" VerticalAlignment="Top"
 			Width="242" Height="326"
-			Visibility="{Binding Path=PostVisible, Converter={StaticResource NegativeBooleanToVisibilityConverter}}"
+			Visibility="{Binding Path=LoadingVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
 		/>
 
 		<ItemsControl x:Name="blog_info"

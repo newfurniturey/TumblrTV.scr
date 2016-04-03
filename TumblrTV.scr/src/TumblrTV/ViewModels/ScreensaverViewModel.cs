@@ -59,13 +59,48 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 					post_image_url = value;
 					NotifyPropertyChanged();
 					NotifyPropertyChanged("PostVisible");
+					NotifyPropertyChanged("LoadingVisible");
 				}
 			}
 		}
 
 		public bool PostVisible {
 			get {
-				return PostImageUrl != null;
+				return (!not_found && (PostImageUrl != null));
+			}
+		}
+
+		public bool LoadingVisible {
+			get {
+				return !PostVisible && !NotFound;
+			}
+		}
+
+		private bool not_found = false;
+		public bool NotFound {
+			get {
+				return not_found;
+			}
+			set {
+				if (not_found != value) {
+					not_found = value;
+					NotifyPropertyChanged();
+					NotifyPropertyChanged("PostVisible");
+					NotifyPropertyChanged("LoadingVisible");
+				}
+			}
+		}
+
+		private string not_found_tag = "";
+		public string NotFoundTag {
+			get {
+				return not_found_tag;
+			}
+			set {
+				if (not_found_tag != value) {
+					not_found_tag = value;
+					NotifyPropertyChanged();
+				}
 			}
 		}
 		#endregion
@@ -83,7 +118,8 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 			if (post == null) {
 				if (this.retryCount++ >= ScreensaverViewModel.MAX_RETRIES) {
 					this.timer.Stop();
-					// @todo Display the error screen
+					this.NotFoundTag = tv.GetCurrentTag(this.tvId);
+					this.NotFound = true;
 				}
 
 				return;
