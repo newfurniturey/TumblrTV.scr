@@ -10,12 +10,15 @@ using System.Threading.Tasks;
 
 namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 	public class TumblrTV {
+		public const int INVALID_OBJ = -1;
 
 		private AppSettings settings = null;
 		private static TumblrTV instance = null;
 		private string[] urls = null;
 		private ConcurrentDictionary<string, List<Post>> posts = new ConcurrentDictionary<string, List<Post>>();
 		private ConcurrentDictionary<string, int> currentIndexes = new ConcurrentDictionary<string, int>();
+
+		private static ConcurrentDictionary<ITvSubscriber, int> registeredTVs = new ConcurrentDictionary<ITvSubscriber, int>();
 		private static int id = 0;
 
 		private TumblrTV(AppSettings settings) {
@@ -34,8 +37,16 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 			return TumblrTV.instance;
 		}
 
-		public int GetId() {
-			return TumblrTV.id++;
+		public int GetId(ITvSubscriber obj) {
+			return TumblrTV.registeredTVs.ContainsKey(obj) ? TumblrTV.registeredTVs[obj] : TumblrTV.INVALID_OBJ;
+		}
+
+		public int Register(ITvSubscriber obj) {
+			if (!TumblrTV.registeredTVs.ContainsKey(obj)) {
+				TumblrTV.registeredTVs[obj] = TumblrTV.id++;
+			}
+
+			return TumblrTV.registeredTVs[obj];
 		}
 		
 		public Post NextPost(int id) {

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using TV = com.newfurniturey.TumblrTV.src.TumblrTV.TumblrTV;
 
 namespace com.newfurniturey.TumblrTV.ViewModels {
-	class ScreensaverViewModel : INotifyPropertyChanged {
+	class ScreensaverViewModel : ITvSubscriber, INotifyPropertyChanged {
 
 		private TV tv = null;
 		private int tvId = -1;
@@ -68,7 +68,7 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 
 		public ScreensaverViewModel(TV tv) {
 			this.tv = tv;
-			this.tvId = tv.GetId();
+			this.tvId = tv.Register(this);
 
 			loadTv();
 			createTimer();
@@ -107,5 +107,6 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 			}
 		}
 		#endregion
+
 	}
 }
