@@ -20,6 +20,7 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 
 		private static ConcurrentDictionary<ITvSubscriber, int> registeredTVs = new ConcurrentDictionary<ITvSubscriber, int>();
 		private static int id = 0;
+		private static bool postsLoaded = false;
 
 		private TumblrTV(AppSettings settings) {
 			this.settings = settings;
@@ -50,9 +51,14 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 		}
 		
 		public Post NextPost(int id) {
-			string tag = settings.Tags[id % settings.Tags.Count];
+			if (!TumblrTV.postsLoaded) {
+				Console.WriteLine("[TumblrTV] Posts not yet loaded.");
+				return null;
+			}
 
+			string tag = settings.Tags[id % settings.Tags.Count];
 			if (!posts.ContainsKey(tag) || (posts[tag].Count == 0)) {
+				Console.WriteLine("[TumblrTV] Tag " + tag + " not found.");
 				return null;
 			}
 			
@@ -64,6 +70,7 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 		private void Init() {
 			BackgroundWorker worker = new BackgroundWorker();
 			worker.WorkerReportsProgress = true;
+			worker.ProgressChanged += tvProgressChanged;
 			worker.DoWork += loadTv;
 			worker.RunWorkerAsync();
 		}
@@ -77,7 +84,7 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 
 				using (WebClient wc = new WebClient()) {
 					wc.Headers.Add("X-Requested-With", "XMLHttpRequest");
-					var jsonResponse = wc.DownloadString("https://www.tumblr.com/svc/tv/search/" + tag + "?size=1280&limit=40");
+					var jsonResponse = wc.DownloadString("https://www.tumblr.com/svc/tv/search/" + WebUtility.UrlEncode(tag) + "?size=1280&limit=40");
 
 					dynamic json = JsonConvert.DeserializeObject(jsonResponse);
 					urls = new string[((Newtonsoft.Json.Linq.JArray)json.response.images).Count];
@@ -93,8 +100,16 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 					}
 				}
 
-				((BackgroundWorker)sender).ReportProgress(++complete / total);
+				complete++;
+				((BackgroundWorker)sender).ReportProgress((int)(((float)complete / (float)total) * 100));
 			});
+		}
+
+		private void tvProgressChanged(object sender, ProgressChangedEventArgs e) {
+			if (e.ProgressPercentage == 100) {
+				Console.WriteLine("[TumblrTV] Posts Loaded!");
+				TumblrTV.postsLoaded = true;
+			}
 		}
 	}
 }
