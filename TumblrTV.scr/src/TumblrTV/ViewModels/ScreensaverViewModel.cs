@@ -13,8 +13,12 @@ using TV = com.newfurniturey.TumblrTV.src.TumblrTV.TumblrTV;
 namespace com.newfurniturey.TumblrTV.ViewModels {
 	class ScreensaverViewModel : ITvSubscriber, INotifyPropertyChanged {
 
+		public const int MAX_RETRIES = 2;
+
 		private TV tv = null;
 		private int tvId = -1;
+		private System.Timers.Timer timer = null;
+		private int retryCount = 0;
 
 		#region Properties
 		private string post_blog_name;
@@ -77,9 +81,14 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 		private void loadTv() {
 			Post post = this.tv.NextPost(this.tvId);
 			if (post == null) {
-				// ??
+				if (this.retryCount++ >= ScreensaverViewModel.MAX_RETRIES) {
+					this.timer.Stop();
+					// @todo Display the error screen
+				}
+
 				return;
 			}
+			this.retryCount = 0;
 
 			PostImageUrl = post.Url;
 			BlogName = post.Name;
@@ -91,10 +100,10 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 		}
 
 		private void createTimer() {
-			System.Timers.Timer t = new System.Timers.Timer();
-			t.Elapsed += new System.Timers.ElapsedEventHandler(timerEvent);
-			t.Interval = 5000;
-			t.Enabled = true;
+			this.timer = new System.Timers.Timer();
+			this.timer.Elapsed += new System.Timers.ElapsedEventHandler(timerEvent);
+			this.timer.Interval = 5000;
+			this.timer.Enabled = true;
 		}
 
 		#region INotifyPropertyChanged Handler(s)
