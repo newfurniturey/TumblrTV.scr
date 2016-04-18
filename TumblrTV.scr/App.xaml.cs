@@ -75,7 +75,7 @@ namespace com.newfurniturey.TumblrTV {
 		}
 
 		private Window DisplayScreensaver() {
-			TV tv = TV.GetInstance(this.settings);
+			TV tv = TV.GetInstance(Screen.AllScreens.Length, this.settings);
 			foreach (Screen screen in Screen.AllScreens) {
 				(new Screensaver(tv, screen.Bounds)).Show();
 			}
@@ -84,7 +84,7 @@ namespace com.newfurniturey.TumblrTV {
 		}
 
 		private Window DisplayPreviewScreen(Int32 winHandle) {
-			TV tv = TV.GetInstance(this.settings);
+			TV tv = TV.GetInstance(1, this.settings);
 			new Screensaver(tv, new IntPtr(winHandle));
 			return null;
 		}

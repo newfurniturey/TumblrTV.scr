@@ -14,7 +14,6 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 
 		private AppSettings settings = null;
 		private static TumblrTV instance = null;
-		private string[] urls = null;
 		private ConcurrentDictionary<string, List<Post>> posts = new ConcurrentDictionary<string, List<Post>>();
 		private ConcurrentDictionary<string, int> currentIndexes = new ConcurrentDictionary<string, int>();
 
@@ -22,18 +21,18 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 		private int id = 0;
 		private bool postsLoaded = false;
 
-		private TumblrTV(AppSettings settings) {
+		private TumblrTV(int numTvs, AppSettings settings) {
 			this.settings = settings;
 			Init();
 		}
 
-		public static TumblrTV GetInstance(AppSettings settings = null) {
+		public static TumblrTV GetInstance(int numTvs, AppSettings settings = null) {
 			if (TumblrTV.instance == null) {
 				if (settings == null) {
 					throw new ArgumentNullException("Settings cannot be null during initialization");
 				}
 
-				TumblrTV.instance = new TumblrTV(settings);
+				TumblrTV.instance = new TumblrTV(numTvs, settings);
 			}
 			return TumblrTV.instance;
 		}
@@ -96,11 +95,7 @@ namespace com.newfurniturey.TumblrTV.src.TumblrTV {
 					var jsonResponse = wc.DownloadString("https://www.tumblr.com/svc/tv/search/" + WebUtility.UrlEncode(tag) + "?size=1280&limit=40");
 
 					dynamic json = JsonConvert.DeserializeObject(jsonResponse);
-					urls = new string[((Newtonsoft.Json.Linq.JArray)json.response.images).Count];
-					int i = 0;
 					foreach (var image in json.response.images) {
-						urls[i++] = image.media[0].url;
-
 						posts[tag].Add(new Post() {
 							Url = image.media[0].url,
 							Avatar = image.avatar,
