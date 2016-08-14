@@ -25,6 +25,11 @@
 	</Window.Resources>
 
 	<Canvas x:Name="MainCanvas" Background="Black">
+		<Image x:Name="post_image_loading"
+			gif:ImageBehavior.AnimatedSource="{Binding Path=PostImageUrlBackground, UpdateSourceTrigger=PropertyChanged}"
+			gif:ImageBehavior.AnimationLoaded="post_image_loading_AnimationLoaded"
+			Visibility="Collapsed"
+		/>
 		<Image x:Name="post_image_bg"
 			gif:ImageBehavior.AnimatedSource="{Binding Path=PostImageUrl, UpdateSourceTrigger=PropertyChanged}"
 			Visibility="{Binding Path=PostVisible, Converter={StaticResource BooleanToVisibilityConverter}}"

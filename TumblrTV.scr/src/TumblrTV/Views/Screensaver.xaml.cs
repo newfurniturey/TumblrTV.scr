@@ -154,6 +154,10 @@ namespace com.newfurniturey.TumblrTV.Views {
 			sizeImages();
 		}
 
+		private void post_image_loading_AnimationLoaded(object sender, RoutedEventArgs e) {
+			((ScreensaverViewModel)DataContext).ImageLoaded();
+		}
+
 		private void post_image_bg_AnimationLoaded(object sender, RoutedEventArgs e) {
 			ImageSource source = WpfAnimatedGif.ImageBehavior.GetAnimatedSource((System.Windows.Controls.Image)sender);
 

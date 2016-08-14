@@ -63,6 +63,18 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 				}
 			}
 		}
+		private string next_post_image_url = null;
+		public string PostImageUrlBackground {
+			get {
+				return next_post_image_url;
+			}
+			set {
+				if (next_post_image_url != value) {
+					next_post_image_url = value;
+					NotifyPropertyChanged();
+				}
+			}
+		}
 
 		public bool PostVisible {
 			get {
@@ -113,6 +125,15 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 			createTimer();
 		}
 
+		private Post nextPost = null;
+		public void ImageLoaded() {
+			PostImageUrl = nextPost.Url;
+			BlogName = nextPost.Name;
+			BlogAvatarUrl = nextPost.Avatar;
+			nextPost = null;
+			this.timer.Start();
+		}
+
 		private void loadTv() {
 			Post post = this.tv.NextPost(this.tvId);
 			if (post == null) {
@@ -126,12 +147,17 @@ namespace com.newfurniturey.TumblrTV.ViewModels {
 			}
 			this.retryCount = 0;
 
+			nextPost = post;
+			PostImageUrlBackground = post.Url;
+			/*
 			PostImageUrl = post.Url;
 			BlogName = post.Name;
 			BlogAvatarUrl = post.Avatar;
+			*/
 		}
 		
 		private void timerEvent(object source, System.Timers.ElapsedEventArgs e) {
+			this.timer.Stop();
 			loadTv();
 		}
 
